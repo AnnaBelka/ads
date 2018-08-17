@@ -11,6 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Auth::routes();
+
+Route::get('/', 'AdController@index');//все объявления
+
+Route::get('/edit', 'AdController@edit');// создание объявления
+Route::post('/edit', 'AdController@store');// создание объявления
+
+Route::get('/{id}', 'AdController@show'); //просмотр объявления
+
+Route::get('/edit/{id}', 'AdController@change');//редактирование объявления
+Route::post('/edit/{id}', 'AdController@update');//редактирование объявления
+
+Route::delete('/delete/{id}', 'AdController@destroy'); //удаление объявления
