@@ -84,6 +84,7 @@ class AdController extends Controller
     public function change($id)
     {
         $ad = Ad::findOrFail($id);
+        $this->authorize('update', $ad);
         return view('ads.edit', compact('ad'));
     }
 
@@ -98,6 +99,8 @@ class AdController extends Controller
     public function update(Request $request, $id)
     {
         $ad = Ad::findOrFail($id);
+
+        $this->authorize('update', $ad);
 
         $this->validate($request, [
             'title' => 'required|max:255',

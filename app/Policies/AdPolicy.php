@@ -19,6 +19,12 @@ class AdPolicy
     {
         //
     }
+
+    public function update(User $user, Ad $ad)
+    {
+        return $user->id === $ad->user_id;
+    }
+
     /**
      * Determine if the given user can delete the given ad.
      *
