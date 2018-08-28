@@ -18,7 +18,7 @@
                     <label for="title" class="col-sm-3 control-label">Title</label>
 
                     <div class="col-sm-6">
-                        <input type="text" name="title" id="title" class="form-control" value="" required>
+                        <input type="text" name="title" id="title" class="form-control" value="" required maxlength="255">
                     </div>
                 </div>
                 <div class="form-group">

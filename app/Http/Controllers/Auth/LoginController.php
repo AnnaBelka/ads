@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -47,19 +50,27 @@ class LoginController extends Controller
         return 'name';
     }
 
-    /**
-     * Handle a failed authorization attempt.
-     *
-     * @return void
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     */
-
-
-    protected function sendFailedLoginResponse(Request $request)
+    public function login(Request $request)
     {
-        return view('auth.register', ['post_data' => $request->all()]);
+        $this->validate($request, [
+            'name' => 'required|string',
+            'password' => 'required|string'
+        ]);
+        $user = User::firstOrCreate([
+            'name' => $request->name
+        ], [
+            'name' => $request->name,
+            'password' => Hash::make($request->password)
+        ]);
 
+        if ($user && Hash::check($request->password, $user->password)) {
+            auth()->loginUsingId($user->id);
+            return redirect()->intended('/');
+        } else {
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
+        }
     }
 
 }
